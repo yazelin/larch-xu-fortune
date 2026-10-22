@@ -2,7 +2,7 @@
 
 七門算命小攤已可離線遊玩，也可由 Larch 的 miniGame 卡片嵌入。原生 HTML、CSS、JavaScript，沒有套件或外部字型、腳本、圖片依賴。紫微標示「下回」。本 repo 不含魏續的第一次問命劇情，那一段由作者在主專案另寫。
 
-直接用瀏覽器開 `index.html`。也可執行 `python3 -m http.server 8000`，開 `http://localhost:8000/`。GitHub Pages 使用 main 分支根目錄即可，不必建置。此 repo 尚未建立遠端、尚未發布；預定網址為 `https://yazelin.github.io/larch-xu-fortune/`。
+直接用瀏覽器開 `index.html`。也可執行 `python3 -m http.server 8000`，開 `http://localhost:8000/`。線上版：https://yazelin.github.io/larch-xu-fortune/ （GitHub Pages，main 分支根目錄，不必建置）。目前畫面還是網頁圖示，之後換成遊戲《仙泉．香布纏．續》的畫。
 
 ## 怎麼玩
 
