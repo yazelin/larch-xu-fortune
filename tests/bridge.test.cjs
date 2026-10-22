@@ -31,3 +31,11 @@ test('新一輪初始化保留累積次數、可以再算一次',()=>{
  h.emit({type:'fortune:save',state:F.record(state,'cezi','cezi-new')});h.emit(F.exitMessage('cezi',{id:'cezi-new'}));assert.equal(h.sent.find(d=>d.name==='fortune_cezi_count').value,9);
 });
 test('固定算法的卡片拒絕另一門的存檔',()=>{const h=host('bird');h.emit({type:'fortune:ready'});const state=copy(h.toGame[0].data.state);h.emit({type:'fortune:save',state:F.record(state,'tarot','tarot-fake')});assert.equal(h.sent.filter(d=>d.type==='larch:set').length,0);});
+test('播放器的沙盒傳到遊戲那一層（來源是 null）：照樣往返，回給遊戲改用 *',()=>{
+ const h=host('face');h.emit({type:'fortune:ready'},h.game,'null');assert.equal(h.toGame.length,1);assert.equal(h.toGame[0].origin,'*');
+ const next=F.record(copy(h.toGame[0].data.state),'face','face-test');h.emit({type:'fortune:save',state:next},h.game,'null');
+ h.emit(F.exitMessage('face',{id:'face-test'}),h.game,'null');
+ assert.deepEqual(copy(h.sent.filter(d=>d.type==='larch:complete')[0].payload),{complete:true,result:{method:'face',id:'face-test'}});
+ const g=host();g.emit(F.exitMessage('cezi',null),g.game,'null');assert.equal(g.sent.at(-1).type,'larch:complete');assert.equal(g.sent.at(-1).payload.complete,false);
+ const x=host();x.emit({type:'fortune:ready'},{},'null');assert.equal(x.toGame.length,0);   // 來源是 null 也只認卡片自己開的那個 iframe
+});

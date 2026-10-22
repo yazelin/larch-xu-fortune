@@ -54,7 +54,7 @@ node --test
 
 塔羅代號保留三個牌位與正逆，例如 `tarot-00-u_tarot-08-r_tarot-21-u`。相面代號保存五個選項；日者代號保存干支、事項與判詞規則。`method` 與 `id` 合起來就是「算法＋哪一張或哪一段」的穩定識別。
 
-卡片把 `save` 轉成兩則 `larch:set {name, value}`，只寫該門的計次與最近代號。收到有效 `exit` 後等二百四十毫秒，送 `larch:complete {result: "exit", payload: {complete, result}}`。同一回的重複存檔及離席不重複計次；來源須是指定 iframe。卡片另核對遊戲網址來源；遊戲接受直接嵌入的父視窗，以相容不透明來源的宿主沙箱。
+卡片把 `save` 轉成兩則 `larch:set {name, value}`，只寫該門的計次與最近代號。收到有效 `exit` 後等二百四十毫秒，送 `larch:complete {result: "exit", payload: {complete, result}}`。同一回的重複存檔及離席不重複計次；來源須是指定 iframe。卡片另核對遊戲網址來源；Larch 把卡片放在沙箱 iframe 裡，沙箱會傳到遊戲那一層，這時遊戲的來源是 `null`，卡片照樣只認自己開的那個 iframe，回給遊戲改用 `*`（2026-10-23 在 Larch 播放器實測：沒這樣處理時遊戲收不到存檔、離席也回不去）。遊戲接受直接嵌入的父視窗，以相容不透明來源的宿主沙箱。
 
 ## 驗收
 

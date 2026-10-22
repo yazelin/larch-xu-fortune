@@ -4,7 +4,8 @@
   'use strict';
   const METHODS=['cezi','bird','tarot','zodiac','face','day','wheel'];
   const frame=document.getElementById('game');
-  let state,origin,initialized=false,finished=false,lastSaved=null,currentMethod=null;
+  let state,origin,peer,initialized=false,finished=false,lastSaved=null,currentMethod=null;
+  // Larch renders this card in a sandboxed iframe; the sandbox carries over to the game frame, whose origin then reads 'null'.
   const send=d=>parent.postMessage(d,'*');
   function set(name,value){send({type:'larch:set',name,value});}
   function init(d){
@@ -36,8 +37,9 @@
   window.addEventListener('message',e=>{
     const d=e.data;if(!d||typeof d!=='object')return;
     if(e.source===parent&&d.type==='larch:init'){init(d);return;}
-    if(!initialized||finished||e.source!==frame.contentWindow||e.origin!==origin)return;
-    if(d.type==='fortune:ready'){frame.contentWindow.postMessage({type:'fortune:state',state},origin);return;}
+    if(!initialized||finished||e.source!==frame.contentWindow||(e.origin!==origin&&e.origin!=='null'))return;
+    peer=e.origin==='null'?'*':origin;
+    if(d.type==='fortune:ready'){frame.contentWindow.postMessage({type:'fortune:state',state},peer);return;}
     if(d.type==='fortune:save'){save(d.state);return;}
     if(d.type==='fortune:exit'){
       const complete=d.complete===true;
