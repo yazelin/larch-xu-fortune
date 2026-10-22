@@ -2,7 +2,8 @@
 Copyright (c) 2026 林亞澤 (Yaze Lin)
 
 本專案 content/算命.md、其編譯產物 data/fortunes.json 與 data/fortunes.js
-的解語，以及 assets/app.js 內的原創 SVG 圖像，以 Creative Commons
+的解語、assets/img/ 內《仙泉．香布纏．續》的遊戲畫，
+以及 assets/app.js 內的原創 SVG 圖像，以 Creative Commons
 Attribution-NonCommercial 4.0 International（CC BY-NC 4.0）授權。
 
 你可以分享、重製與改作上述內容，但必須適當標示作者林亞澤（Yaze Lin）、

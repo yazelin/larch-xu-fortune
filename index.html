@@ -2,15 +2,15 @@
 <html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark"><meta name="description" content="仙泉．香布纏．續的算命小攤。寫字、抽牌、聽鳥語，為自己的心事問一程。">
 <title>一席問命｜仙泉．香布纏．續</title><link rel="stylesheet" href="assets/style.css">
-<script src="assets/core.js" defer></script><script src="assets/app.js" defer></script></head>
+<script src="assets/core.js" defer></script><script src="assets/art.js" defer></script><script src="assets/app.js" defer></script></head>
 <body>
 <div class="sky" aria-hidden="true"><span class="moon"></span><span class="mountain"></span></div>
 <header class="mast"><a href="index.html" class="wordmark">仙泉<span>香布纏．續</span></a><span class="chapter">市井閒遊　／　一席問命</span><button id="theme" class="quiet" aria-label="切換深淺色">換燈色</button></header>
 <main>
 <div class="stall"><div class="beam" aria-hidden="true"></div><div class="banner"><span class="banner-side">一字一相　自有因緣</span><div><p class="eyebrow">為心事，問一程</p><h1 id="heading">一席問命</h1><p id="teller">街角算命仙</p></div><span class="seal" aria-hidden="true">問<br>心</span></div>
 <div class="canopy" aria-hidden="true"></div>
-<div class="table"><section id="menu" aria-labelledby="menu-title"><div class="welcome"><p class="eyebrow">客人，請坐</p><h2 id="menu-title">今日想問哪一門？</h2><p>寫一字、借一相，或讓小鳥替你選一張卦箋。<br>攤上七門各有說法，你自己的路，仍由你走。</p></div><div id="choices" class="choices"></div><p class="fine">此攤只為遊戲與自省。後世諸術亦來作客，古今不拘。</p></section>
-<section id="play" hidden><div class="play-top"><button id="back" class="quiet">← 回攤前</button><span id="era" class="fine"></span></div><h2 id="method-title" tabindex="-1"></h2><p id="intro"></p><div id="scene" class="scene" aria-hidden="true"></div><form id="ritual"><div id="inputs"></div><p id="error" role="alert"></p><button id="cast" class="primary" type="submit">請先生解一解</button></form><div id="draw-area"></div><section id="answer" class="answer" aria-live="polite" hidden><p class="eyebrow">此番解語</p><h3 id="result-title" tabindex="-1"></h3><div id="result-text"></div><p id="source-note" class="fine"></p><div class="actions"><button id="again">再問一回</button><button id="leave" class="primary">收好解語，離席</button></div></section><p id="method-note" class="fine method-note"></p></section>
+<div class="table"><section id="menu" aria-labelledby="menu-title"><div class="welcome"><p class="eyebrow">客人，請坐</p><h2 id="menu-title" tabindex="-1">今日想問哪一門？</h2><p>寫一字、借一相，或讓小鳥替你選一張卦箋。<br>攤上七門各有說法，你自己的路，仍由你走。</p></div><img class="stall-art" src="assets/img/stall.webp" alt="一席問命算命小攤全景" width="640" height="427" loading="lazy" decoding="async"><div id="choices" class="choices"></div><p class="fine">此攤只為遊戲與自省。後世諸術亦來作客，古今不拘。</p></section>
+<section id="play" hidden><div class="play-top"><button id="back" class="quiet">← 回攤前</button><span id="era" class="fine"></span></div><h2 id="method-title" tabindex="-1"></h2><div id="method-art" class="method-art"></div><p id="intro"></p><div id="scene" class="scene" aria-hidden="true"></div><form id="ritual"><div id="inputs"></div><p id="error" role="alert"></p><button id="cast" class="primary" type="submit">請先生解一解</button></form><div id="draw-area"></div><section id="answer" class="answer" aria-live="polite" hidden><p class="eyebrow">此番解語</p><h3 id="result-title" tabindex="-1"></h3><div id="result-art" class="result-art"></div><div id="result-text"></div><p id="source-note" class="fine"></p><div class="actions"><button id="again">再問一回</button><button id="leave" class="primary">收好解語，離席</button></div></section><p id="method-note" class="fine method-note"></p></section>
 </div><div class="table-edge" aria-hidden="true"></div></div>
 <p class="colophon">一席茶，一句話。命途在遠處，腳步在此間。</p>
 <noscript>請開啟瀏覽器的 JavaScript，便可入席。</noscript>

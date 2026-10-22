@@ -2,7 +2,7 @@
 
 七門算命小攤已可離線遊玩，也可由 Larch 的 miniGame 卡片嵌入。原生 HTML、CSS、JavaScript，沒有套件或外部字型、腳本、圖片依賴。紫微標示「下回」。本 repo 不含魏續的第一次問命劇情，那一段由作者在主專案另寫。
 
-直接用瀏覽器開 `index.html`。也可執行 `python3 -m http.server 8000`，開 `http://localhost:8000/`。線上版：https://yazelin.github.io/larch-xu-fortune/ （GitHub Pages，main 分支根目錄，不必建置）。目前畫面還是網頁圖示，之後換成遊戲《仙泉．香布纏．續》的畫。
+直接用瀏覽器開 `index.html`。也可執行 `python3 -m http.server 8000`，開 `http://localhost:8000/`。線上版：https://yazelin.github.io/larch-xu-fortune/ （GitHub Pages，main 分支根目錄，不必建置）。畫面使用《仙泉．香布纏．續》的遊戲畫，依 [LICENSE-CONTENT](LICENSE-CONTENT) 內容授權，不適用程式碼的 MIT 授權。
 
 ## 怎麼玩
 
@@ -39,7 +39,7 @@ node --test
 
 編譯產物 `data/fortunes.json` 已提交。HTTP／Pages 版直接讀 JSON；瀏覽器禁止 `file://` 讀 JSON，因此直接開檔時改讀同一腳本同步產生、內容完全相同的 `data/fortunes.js`。只在改文稿時重編，部署可直接使用已提交的產物。
 
-`assets/core.js` 是可獨立測試的運算，`assets/app.js` 是畫面、原創 SVG 與訊息處理；日後可替換圖像，不改結果代號。隨機採裝置亂數；測試可注入固定種子。
+`assets/core.js` 是可獨立測試的運算，`assets/app.js` 是畫面、互動 SVG 與訊息處理；`assets/art.js` 對應 `assets/img/` 的四十二張遊戲畫，不改結果代號。圖片皆延遲載入，塔羅與星座結果出現時才建立該圖。隨機採裝置亂數；測試可注入固定種子。
 
 ## 嵌進 Larch
 
@@ -58,7 +58,7 @@ node --test
 
 ## 驗收
 
-`node --test` 跑運算、遊戲腳本與真實卡片程式的訊息模擬測試。測項包含二十四個星座交界日、測字表內與表外、五個已知干支日期、固定種子的鳥卦與塔羅、七門遊戲完成離席、存檔去重與來源拒絕。來源見 [tests/SOURCES.md](tests/SOURCES.md)。DOM 模擬測試不驗證瀏覽器排版。
+`node --test` 跑運算、遊戲腳本與真實卡片程式的訊息模擬測試。測項包含二十四個星座交界日、測字表內與表外、五個已知干支日期、固定種子的鳥卦與塔羅、七門遊戲完成離席、存檔去重與來源拒絕。來源見 [tests/SOURCES.md](tests/SOURCES.md)。另驗證二十二張牌、十二星座、七門與攤位共四十二張圖片的對應、WebP 檔頭與尺寸資料，並以暫存目錄故意各少一張牌、星座、門別及攤位圖作負控制。可單跑 `node tools/check_art.cjs`。DOM 模擬測試不驗證瀏覽器排版。
 
 瀏覽器驗收另執行：
 
@@ -68,7 +68,7 @@ node tools/browser_check.cjs
 
 預設使用 `~/line-sticker-studio/node_modules/playwright` 與 `/usr/bin/google-chrome`；可用 `PW_MODULE`、`CHROME_PATH` 指定。程式在桌機淺色、手機深色各截一張完整選單，兩種尺寸各玩七門，並開 `tests/embed_host.html` 讓真實卡片與遊戲往返。截圖寫到 `/tmp/fortune/shots/`，結果寫到 `/tmp/fortune/browser-results.json`。不需測試伺服器，嵌入測試由 Playwright 路由提供同源靜態檔。
 
-本次受執行環境限制，Chrome 啟動遇到 `setsockopt: Operation not permitted`，瀏覽器驗收與截圖尚未完成。不可把 Node 模擬通過當成手機、桌機實測通過。另可在本機 HTTP 伺服器上手動開 `tests/embed_host.html?method=tarot`，上方會列出宿主收到的實際訊息。
+2026-10-23 換上遊戲畫後跑過一次：桌機、手機兩種尺寸七門都玩完，嵌入往返沒有錯誤；另外捲到頁尾確認選單八張圖都載入，塔羅逆位的牌圖轉了 180 度，星座結果圖也有載入。不可把 Node 模擬通過當成手機、桌機實測通過。另可在本機 HTTP 伺服器上手動開 `tests/embed_host.html?method=tarot`，上方會列出宿主收到的實際訊息。
 
 ## 考據與還沒核實
 
@@ -86,6 +86,6 @@ node tools/browser_check.cjs
 
 ## 授權與作者連結
 
-程式碼依 [MIT](LICENSE)；算命文字、編譯資料與原創 SVG 圖像依 [CC BY-NC 4.0](LICENSE-CONTENT)。作者：林亞澤（Yaze Lin），二〇二六年。
+程式碼依 [MIT](LICENSE)；算命文字、編譯資料、遊戲畫與原創 SVG 圖像依 [CC BY-NC 4.0](LICENSE-CONTENT)。作者：林亞澤（Yaze Lin），二〇二六年。
 
 作者頁尾使用 `promo-footer` 的標準注入程式，含 GitHub、Facebook、Buy Me a Coffee 與部落格。為本作補上嵌入模式停用，以及減少動態效果時仍保留連結、停用對話泡。標準程式在 GitHub Pages 上會向作者計數服務送出站名，不傳本作輸入或算命結果；離線與嵌入版不送。
