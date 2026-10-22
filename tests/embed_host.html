@@ -1,0 +1,13 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Larch 接線驗收</title><style>body{margin:0;font:14px sans-serif;background:#eee}iframe{width:100%;height:850px;border:0}pre{padding:16px;white-space:pre-wrap}</style></head><body><pre id="log">等待卡片。</pre><iframe id="card" title="模擬 Larch 卡片"></iframe><script>
+window.events=[];window.variables={};
+const card=document.getElementById('card'), p=new URLSearchParams(location.search);
+const methods=['cezi','bird','tarot','zodiac','face','day','wheel'];
+for(const m of methods){variables['fortune_'+m+'_count']=m==='cezi'?3:0;variables['fortune_'+m+'_last']=m==='cezi'?'cezi-old':'';}
+window.addEventListener('message',e=>{
+ if(e.source!==card.contentWindow)return;
+ const d=e.data;events.push(d);document.getElementById('log').textContent=JSON.stringify(events,null,2);
+ if(d.type==='larch:ready')card.contentWindow.postMessage({type:'larch:init',variables,values:{method:p.get('method')||'cezi',teller:'市口問命翁',pagesUrl:new URL('../index.html',location.href).href}},location.origin);
+ if(d.type==='larch:set'&&Object.hasOwn(variables,d.name))variables[d.name]=d.value;
+});
+card.src='../larch/card.html';
+</script></body></html>

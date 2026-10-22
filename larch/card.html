@@ -1,0 +1,52 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>算命小攤接線卡</title><style>html,body{margin:0;height:100%;background:#192d2c;color:#f2e6c9;font-family:serif}iframe{width:100%;height:100%;display:block;border:0}p{padding:24px}</style></head><body><p id="waiting">正在備席……</p><iframe id="game" title="一席問命" hidden></iframe>
+<script>
+(function(){
+  'use strict';
+  const METHODS=['cezi','bird','tarot','zodiac','face','day','wheel'];
+  const frame=document.getElementById('game');
+  let state,origin,initialized=false,finished=false,lastSaved=null,currentMethod=null;
+  const send=d=>parent.postMessage(d,'*');
+  function set(name,value){send({type:'larch:set',name,value});}
+  function init(d){
+    finished=false;lastSaved=null;
+    const vars=d.variables||{},values=d.values||{};
+    state={version:1,counts:{},last:{}};
+    for(const m of METHODS){const n=vars['fortune_'+m+'_count'];state.counts[m]=Number.isSafeInteger(n)&&n>=0?n:0;state.last[m]=typeof vars['fortune_'+m+'_last']==='string'?vars['fortune_'+m+'_last']:'';}
+    try{
+      const url=new URL(values.pagesUrl||'https://yazelin.github.io/larch-xu-fortune/');
+      if(url.protocol!=='https:' && !(url.protocol==='http:'&&['127.0.0.1','localhost'].includes(url.hostname)))throw Error();
+      const m=METHODS.includes(values.method)?values.method:'cezi';currentMethod=m;
+      url.searchParams.set('method',m);url.searchParams.set('teller',String(values.teller||'街角算命仙').slice(0,40));url.searchParams.set('embed','1');
+      origin=url.origin;initialized=true;frame.src=url.href;frame.hidden=false;document.getElementById('waiting').hidden=true;
+    }catch(_){document.getElementById('waiting').textContent='遊戲網址有誤，請檢查卡片設定。';}
+  }
+  function save(s){
+    if(!s||s.version!==1||!s.counts||!s.last)return;
+    const changed=[];
+    for(const m of METHODS){
+      if(!Number.isSafeInteger(s.counts[m])||s.counts[m]<0||typeof s.last[m]!=='string'||s.last[m].length>300)return;
+      if(s.counts[m]!==state.counts[m]||s.last[m]!==state.last[m])changed.push(m);
+    }
+    if(changed.length!==1)return;
+    const m=changed[0];if(m!==currentMethod)return;if(s.counts[m]!==state.counts[m]+1||!s.last[m])return;
+    // Copy rather than retaining untrusted keys or object references.
+    state.counts[m]=s.counts[m];state.last[m]=s.last[m];lastSaved={method:m,id:s.last[m]};
+    set('fortune_'+m+'_count',state.counts[m]);set('fortune_'+m+'_last',state.last[m]);
+  }
+  window.addEventListener('message',e=>{
+    const d=e.data;if(!d||typeof d!=='object')return;
+    if(e.source===parent&&d.type==='larch:init'){init(d);return;}
+    if(!initialized||finished||e.source!==frame.contentWindow||e.origin!==origin)return;
+    if(d.type==='fortune:ready'){frame.contentWindow.postMessage({type:'fortune:state',state},origin);return;}
+    if(d.type==='fortune:save'){save(d.state);return;}
+    if(d.type==='fortune:exit'){
+      const complete=d.complete===true;
+      if(complete&&(!lastSaved||d.result?.method!==lastSaved.method||d.result?.id!==lastSaved.id))return;
+      if(!complete&&d.result!==null)return;
+      finished=true;
+      setTimeout(()=>send({type:'larch:complete',result:'exit',payload:{complete,result:complete?lastSaved:null}}),240);
+    }
+  });
+  send({type:'larch:ready'});
+})();
+</script></body></html>
