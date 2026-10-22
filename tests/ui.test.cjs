@@ -10,10 +10,10 @@ async function app(method,hydrate=true,options={}){
   set textContent(x){this._text=String(x);this.children=[];}get textContent(){return this._text;}
   set innerHTML(x){this._html=x;this.children=[];for(const m of x.matchAll(/id="([^"]+)"/g)){const e=new Element();e.id=m[1];}}get innerHTML(){return this._html;}
   append(...xs){for(const x of xs){x.parentNode=this;this.children.push(x);}}replaceChildren(...xs){this.children=[];this.append(...xs);}
-  addEventListener(type,fn){this['on'+type]=fn;}focus(){}before(){}insertAdjacentHTML(){}remove(){this.parentNode.children=this.parentNode.children.filter(c=>c!==this);}
+  addEventListener(type,fn){this['on'+type]=fn;}removeAttribute(k){(this.removed??=new Set()).add(k);}focus(){}before(){}insertAdjacentHTML(){}remove(){this.parentNode.children=this.parentNode.children.filter(c=>c!==this);}
   querySelector(){return this.actor||(this.actor=new Element());}
  }
- for(const id of ['theme','teller','menu-title','menu','play','heading','method-title','method-art','result-art','intro','era','method-note','error','answer','draw-area','ritual','inputs','scene','cast','choices','result-title','result-text','source-note','again','leave','back']){const e=new Element();e.id=id;}
+ for(const id of ['theme','teller','menu-title','menu','play','heading','method-title','method-art','result-art','intro','era','method-note','error','answer','draw-area','ritual','inputs','scene','cast','choices','result-title','result-text','source-note','again','leave','back','wordmark']){const e=new Element();e.id=id;}
  const body=new Element('body'),head=new Element('head');
  const parent={postMessage:d=>events.push(d)};
  const ctx={URLSearchParams,Uint32Array,Date,crypto:{getRandomValues:a=>(a[0]=options.randomWord??2345678,a)},fetch:async()=>({ok:true,json:async()=>D}),setInterval:()=>1,clearInterval(){},setTimeout,matchMedia:()=>({matches:true}),getComputedStyle:()=>({colorScheme:'light'}),location:{protocol:options.protocol||'http:',search:'?method='+method+'&embed=1'},parent,document:{body,head,createElement:tag=>new Element(tag),getElementById:id=>ids.get(id)},window:{Fortune:F,FortuneArt:require('../assets/art.js'),parent,addEventListener:(type,fn)=>listeners.push(fn)}};
@@ -69,3 +69,4 @@ test('直接開檔使用本機資料腳本及相對圖片路徑',async()=>{
  assert.equal(ids.get('answer').hidden,false);
  assert.equal(ids.get('result-art').children[0].src,'assets/img/zodiac_capricorn.webp');
 });
+test('嵌入遊戲時字標不連回選單（遊戲裡直接開某一門，沒有首頁）',async()=>{const {ids}=await app('face');assert.ok(ids.get('wordmark').removed?.has('href'));});

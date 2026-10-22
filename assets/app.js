@@ -6,6 +6,8 @@
   const params = new URLSearchParams(location.search);
   const embed = params.get('embed') === '1';
   if (embed) document.body.classList.add('embed');
+  // In the game the card opens one door directly and there is no menu to return to, so the wordmark stops being a link.
+  if (embed) $('wordmark').removeAttribute('href');
   $('theme').onclick = () => {
     const dark = getComputedStyle(document.body).colorScheme === 'dark';
     document.body.classList.toggle('light', dark); document.body.classList.toggle('dark', !dark);
